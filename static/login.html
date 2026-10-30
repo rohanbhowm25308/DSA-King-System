@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#020611">
+  <title>DSA King System | Cosmic Orb Login</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--bg:#020611;--cyan:#3dbbff;--ice:#b4e9ff;--muted:#7b96b1;--border:#173b59}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:#e8f6ff;font-family:"Space Grotesk",Arial,sans-serif}body{overflow-x:hidden}
+#universe,.vignette{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}#universe{z-index:0}.vignette{z-index:1;background:radial-gradient(ellipse at 38% 46%,transparent 14%,#02061150 65%,#020611dd 115%),linear-gradient(90deg,transparent 40%,#0206116b 75%)}
+.layout{position:relative;z-index:2;min-height:100svh;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(390px,.82fr);max-width:1700px;margin:auto;align-items:center;padding:35px clamp(20px,5vw,85px);gap:clamp(20px,5vw,95px)}
+.hero{height:min(780px,92svh);min-height:590px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;position:relative}
+.eyebrow{align-self:stretch;font:600 12px Rajdhani,sans-serif;letter-spacing:.28em;color:#8bb9d7}.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#38d5ff;box-shadow:0 0 12px #3ce5ff;margin-right:9px;vertical-align:middle}.serial{float:right;color:#3c6c91}
+.orb-wrap{width:min(100%,690px);aspect-ratio:1;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 32px #0077ff22)}
+#orb{position:absolute;inset:0;width:100%;height:100%}.orb-center{pointer-events:none;text-align:center;position:relative;z-index:2;transform:translateY(4%);text-shadow:0 0 25px #159bff80}.crown{font-size:clamp(52px,6vw,85px);line-height:1;color:#69d3ff;text-shadow:0 0 20px #08b7ff,0 0 65px #008cff;animation:crownPulse 3.5s ease-in-out infinite}
+.orb-title{font-family:Rajdhani,sans-serif;font-weight:700;font-size:clamp(27px,3.7vw,55px);line-height:.91;letter-spacing:.11em}.orb-title span{font-size:.78em;letter-spacing:.27em;color:#c5f1ff}.orb-subtitle{margin-top:16px;font:600 clamp(9px,.9vw,12px) Rajdhani,sans-serif;letter-spacing:.26em;color:#65bfe9}
+.hero-bottom{display:flex;align-items:center;gap:17px;justify-content:center;width:100%;color:#b4e6ff;font:600 13px Rajdhani,sans-serif;letter-spacing:.24em}.hero-bottom .line{width:50px;height:1px;background:linear-gradient(90deg,transparent,#338cc3)}.hero-bottom .line:last-child{transform:rotate(180deg)}.diamond{font-size:8px;color:#29b5ff}.hero-note{margin:4px 0 0;text-align:center;color:#4f7898;letter-spacing:.18em;font:600 10px Rajdhani,sans-serif}
+.auth-area{display:flex;align-items:center;flex-direction:column;gap:16px}.auth-card{width:min(100%,475px);background:linear-gradient(140deg,#08172de8,#051020f2 68%,#07172cf2);border:1px solid #1c5784;border-radius:17px;box-shadow:0 0 0 1px #0b2945,0 30px 100px #0009,0 0 65px #0a6eaf15;overflow:hidden;backdrop-filter:blur(18px)}
+.auth-top{padding:19px 27px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #153551;color:#8ec5e9;font:700 13px Rajdhani,sans-serif;letter-spacing:.15em}.auth-mark{font-size:23px;color:#50c6ff}.version{margin-left:auto;font-size:11px;color:#4b7a9c}
+.auth-body{padding:33px clamp(22px,3vw,39px) 27px}.form-kicker{font:700 11px Rajdhani,sans-serif;letter-spacing:.22em;color:#43a9e5;margin:0 0 7px}h1{font:700 clamp(29px,3vw,37px) Rajdhani,sans-serif;letter-spacing:.02em;margin:0}.title-dot{color:#36baff}.intro{color:#8aa4bd;font-size:12px;margin:6px 0 25px}
+.field{margin-bottom:18px}.field label,.label-row label{font:700 11px Rajdhani,sans-serif;letter-spacing:.15em;color:#a9d5f3}.label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}.field>label{display:block;margin-bottom:7px}.input-shell{height:46px;display:flex;align-items:center;gap:12px;background:#091d34;border:1px solid #1a3b59;border-radius:8px;padding:0 12px;transition:border-color .2s,box-shadow .2s}.input-shell:focus-within{border-color:#3aa8ed;box-shadow:0 0 0 3px #139bff18}.input-shell>span{color:#4f9bc9}.input-shell input{width:100%;min-width:0;outline:none;border:0;background:transparent;color:#e9f7ff;font:500 13px "Space Grotesk",sans-serif}.input-shell input::placeholder{color:#5b7894}
+button{font-family:inherit;cursor:pointer}.text-link{background:none;border:0;color:#4aa8df;font-size:11px}.eye{border:0;background:none;color:#83a6c2;font-size:18px}.remember{display:flex;align-items:center;gap:9px;color:#94b2c9;font-size:11px;margin:1px 0 16px}.remember input{accent-color:#19a6ff}
+.message{font-size:11px;min-height:14px;color:#8cdcff;margin:0 0 7px}.primary{width:100%;height:46px;display:flex;justify-content:center;align-items:center;gap:20px;background:linear-gradient(95deg,#0473c7,#00adf6);border:1px solid #3dbaff;border-radius:8px;color:white;font:700 14px Rajdhani,sans-serif;letter-spacing:.16em;box-shadow:0 0 25px #008cff38;transition:transform .2s,box-shadow .2s}.primary:hover{transform:translateY(-2px);box-shadow:0 0 35px #008cff6b}
+.or{display:flex;align-items:center;gap:12px;margin:23px 0 16px;color:#6083a0;font:600 10px Rajdhani,sans-serif;letter-spacing:.13em}.or::before,.or::after{content:"";height:1px;background:#1b3b54;flex:1}.google{height:43px;width:100%;border:1px solid #214866;border-radius:8px;background:#0b1b30;color:#cde6f6;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px}.google:hover{border-color:#2da7f4}.g-icon{font-size:19px;font-weight:700;color:#4285f4;text-shadow:1px 1px #34a853,-1px -1px #ea4335}
+.switch-line{text-align:center;color:#7d9db6;font-size:12px;margin:21px 0 0}.switch-line button{border:0;background:none;color:#4abfff;font-weight:700}.auth-footer{padding:15px 25px;border-top:1px solid #153551;display:flex;justify-content:space-between;color:#477a9d;font:600 10px Rajdhani,sans-serif;letter-spacing:.13em}.auth-footer span:first-child{color:#56c3c7}.disclaimer{font:600 10px Rajdhani,sans-serif;color:#4d7190;letter-spacing:.14em;text-align:center;margin:0}
+@keyframes crownPulse{50%{text-shadow:0 0 35px #34c9ff,0 0 85px #007cff;transform:translateY(-5px)}}
+@media(max-width:950px){.layout{grid-template-columns:1fr;gap:12px;padding:22px 16px 35px}.hero{min-height:0;height:auto}.eyebrow{max-width:600px;margin:auto}.orb-wrap{width:min(100%,480px)}.hero-bottom,.hero-note{display:none}.auth-card{max-width:520px}.auth-area{margin-top:-12px}.vignette{background:radial-gradient(ellipse at 50% 30%,transparent,#020611d9 110%)}}@media(max-width:460px){.orb-wrap{width:100%;margin-top:-15px;margin-bottom:-20px}.orb-title{font-size:27px}.crown{font-size:50px}.auth-body{padding:23px 21px}.auth-top{padding:13px 20px}}
+@media(prefers-reduced-motion:reduce){.crown{animation:none}.primary{transition:none}}
+
+
+/* Reference login: compact floating neon glass panel, with cosmic orb unchanged */
+.layout{grid-template-columns:minmax(0,1.32fr) minmax(330px,.68fr);gap:clamp(18px,4vw,70px);padding:26px clamp(18px,5vw,85px)}
+.auth-area{width:100%;justify-content:center}
+.auth-card{width:min(100%,390px);border-radius:13px;border:1px solid #087fc6;background:linear-gradient(145deg,rgba(3,17,37,.94),rgba(2,11,27,.96));box-shadow:0 0 0 1px #0a355350,0 0 30px #007fff1d,0 25px 90px #000a;overflow:hidden;position:relative}
+.auth-card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,#36c8ff22,transparent 32%,transparent 70%,#0095ff10)}
+.auth-top{display:none}
+.auth-body{padding:33px 26px 24px;position:relative;z-index:1}
+.form-kicker{display:none}
+.auth-body h1{text-align:center;font:700 30px Rajdhani,Arial,sans-serif;letter-spacing:.025em;margin:0 0 4px}
+.intro{text-align:center;font-size:10px;margin:0 0 24px;color:#7896b4}
+.field{margin-bottom:15px}
+.field label,.label-row label{font-size:10px;letter-spacing:.06em;color:#a4bfd9}
+.input-shell{height:39px;border-radius:6px;background:#0c1d37;border:1px solid #123150}
+.input-shell input{font-size:11px}
+.remember{margin:0 0 14px}
+.primary{height:41px;border-radius:6px;font-size:13px}
+.or{margin:19px 0 15px}
+.google{height:40px;border-radius:6px}
+.switch-line{margin:20px 0 0;font-size:11px}
+.auth-footer{display:none}
+.disclaimer{display:none}
+.auth-card{animation:auth-enter .65s cubic-bezier(.2,.8,.2,1) both}
+@keyframes auth-enter{from{opacity:0;transform:translateX(24px) scale(.975)}to{opacity:1;transform:translateX(0) scale(1)}}
+.auth-body{transition:opacity .22s ease,transform .35s ease}
+.auth-card.switching .auth-body{opacity:.25;transform:translateX(16px)}
+@media(max-width:950px){.layout{grid-template-columns:1fr}.auth-card{width:min(100%,420px)}}
+@media(prefers-reduced-motion:reduce){.auth-card{animation:none}.auth-body{transition:none}}
+
+/* Sliding overlay, adapted from the second recording. Orb and stars untouched. */
+.layout{grid-template-columns:minmax(0,1fr) minmax(550px,1.04fr);gap:clamp(14px,2vw,40px);padding:24px clamp(18px,3vw,56px)}
+.hero{min-width:0}.auth-area{width:100%}
+.auth-card{width:min(100%,720px);max-width:none;min-height:440px;display:grid;grid-template-columns:1fr 1fr;background:#fff;border:7px solid #fff;border-radius:21px;box-shadow:0 28px 90px #0009,0 0 35px #1589ff24;overflow:hidden;isolation:isolate;animation:none}
+.auth-card::before{display:none}.auth-top,.auth-footer{display:none}
+.auth-body{grid-column:1;grid-row:1;z-index:2;padding:29px clamp(14px,2vw,28px) 22px;align-self:center;color:#17273b;background:white;transform:translateX(0);transition:transform .75s cubic-bezier(.22,1,.36,1),opacity .35s ease;min-width:0}
+.auth-card.is-signup .auth-body{transform:translateX(100%)}
+.welcome-panel{grid-column:1;grid-row:1;z-index:3;width:100%;height:100%;border-radius:15px;transform:translateX(100%);background:radial-gradient(ellipse at 50% 110%,#3db0c7 0%,transparent 70%),linear-gradient(155deg,#061c27,#0a4253 70%,#166b82);color:#fff;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;transition:transform .75s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.welcome-panel::before,.welcome-panel::after{content:"";position:absolute;border:1px solid #a4eaff25;width:310px;height:310px;border-radius:50%;left:-130px;bottom:-210px}.welcome-panel::after{left:90px;bottom:-240px;width:370px;height:370px}
+.auth-card.is-signup .welcome-panel{transform:translateX(0)}
+.welcome-inner{position:relative;z-index:1}.welcome-crown{font-size:36px;color:#b8f2ff;text-shadow:0 0 20px #60d9ff}.welcome-panel h2{font:700 clamp(22px,2.5vw,33px) Rajdhani,sans-serif;margin:14px 0 6px}.welcome-panel p{font-size:12px;line-height:1.6;color:#c9e9f3;max-width:240px;margin:0 auto 20px}.welcome-button{border:0;border-radius:50px;background:#f4fbff;color:#123547;font-size:12px;font-weight:700;padding:11px 28px;transition:background .2s,transform .2s}.welcome-button:hover{background:#d3f2ff;transform:translateY(-2px)}
+.auth-body h1{color:#16243a;font-size:27px}.intro{color:#8390a1;font-size:10px;margin-bottom:18px}.field{margin-bottom:11px}.field label,.label-row label{color:#516276}.input-shell{height:38px;background:#f0f3f7;border-color:#e6eaf0}.input-shell input{color:#17273a}.input-shell input::placeholder{color:#9aa6b5}.input-shell>span,.eye{color:#7d93aa}.input-shell:focus-within{border-color:#3b9ed8;box-shadow:0 0 0 2px #3b9ed822}.remember{color:#687a8c;font-size:10px;margin:0 0 8px}.text-link{color:#15769e}.message{margin:0 0 4px}.primary{height:39px;background:#061e29;border-color:#061e29;box-shadow:none;font-size:12px}.primary:hover{background:#0c4b63;box-shadow:0 0 18px #069cce44}.or{color:#a3aeba;margin:12px 0}.or::before,.or::after{background:#e0e6eb}.google{height:37px;background:#fff;border-color:#d7e0e9;color:#40536a;font-size:11px}.switch-line{font-size:10px;color:#8795a3;margin:13px 0 0}.switch-line button{color:#146c93}.auth-body .form-kicker{display:none}
+@media(max-width:1120px){.layout{grid-template-columns:1fr}.hero{height:auto;min-height:0}.orb-wrap{width:min(100%,460px)}.auth-area{margin:0 auto}.auth-card{width:min(100%,680px)}}
+@media(max-width:600px){.auth-card{grid-template-columns:1fr 1fr;min-height:410px}.auth-body{padding:15px 10px}.welcome-panel{padding:9px}.welcome-panel h2{font-size:20px}.welcome-panel p{font-size:10px}.welcome-button{font-size:10px;padding:9px 14px}.auth-body h1{font-size:22px}.intro{font-size:9px}.input-shell{height:34px}.input-shell input{font-size:10px}.field label{font-size:9px}.google{font-size:10px}.welcome-crown{font-size:24px}}
+@media(max-width:390px){.auth-card{min-height:425px}.welcome-panel p{font-size:9px}.auth-body{padding:12px 8px}}
+@media(prefers-reduced-motion:reduce){.auth-body,.welcome-panel{transition:none}}
+
+/* Cosmic dark-blue login palette — same sliding mechanics and orbital background */
+.auth-card{background:#061326;border:7px solid #0a2037;box-shadow:0 24px 85px #000b,0 0 0 1px #238bd488,0 0 36px #087fff30}
+.auth-body{background:linear-gradient(150deg,#091b32,#061327);color:#e9f5ff}
+.auth-body h1{color:#f0f9ff}.intro{color:#90b0cc}
+.field label,.label-row label{color:#a6d5f4}
+.input-shell{background:#0d2945;border-color:#205276}
+.input-shell input{color:#f1f9ff}.input-shell input::placeholder{color:#7e9eb8}
+.input-shell>span,.eye{color:#79caff}
+.input-shell:focus-within{border-color:#42baff;box-shadow:0 0 0 2px #1da7ff33}
+.remember{color:#a1bed7}.text-link{color:#56caff}.message{color:#70d9ff}
+.primary{background:linear-gradient(95deg,#076bb9,#03a8f1);border-color:#2bb8ff;box-shadow:0 0 20px #0099ff2e;color:#fff}
+.primary:hover{background:linear-gradient(95deg,#0786d8,#28c0ff);box-shadow:0 0 26px #0099ff77}
+.or{color:#7298b6}.or::before,.or::after{background:#24506f}
+.google{background:#0c2742;border-color:#245579;color:#d8efff}.google:hover{border-color:#42baff;background:#123655}
+.switch-line{color:#8fb1cb}.switch-line button{color:#5cc9ff}
+.welcome-panel{background:radial-gradient(ellipse at 55% 110%,#1174a8 0%,transparent 72%),linear-gradient(145deg,#020b1b,#062344 70%,#075c91);border:1px solid #247cb2}
+.welcome-panel p{color:#c1e9ff}.welcome-crown{color:#6fd4ff;text-shadow:0 0 25px #19baff}
+.welcome-button{background:#dff5ff;color:#053456}.welcome-button:hover{background:#b9e9ff}
+
+/* Larger desktop presentation: keep the existing artwork and auth behavior. */
+@media (min-width:1121px) {
+  .layout { max-width:1900px; grid-template-columns:minmax(0,1fr) minmax(0,1.12fr); gap:clamp(18px,2.2vw,42px); padding:22px clamp(20px,2.7vw,52px); }
+  .hero { height:min(830px,94svh); min-height:640px; }
+  .orb-wrap { width:min(100%,780px); }
+  .auth-card { width:min(100%,820px); min-height:510px; }
+  .auth-body { padding:38px clamp(20px,2.2vw,40px) 28px; }
+  .auth-body h1 { font-size:clamp(28px,2.2vw,35px); }
+  .intro { font-size:12px; margin-bottom:23px; }
+  .field { margin-bottom:15px; }
+  .input-shell { height:46px; }
+  .input-shell input { font-size:13px; }
+  .primary { height:46px; }
+  .google { height:43px; font-size:12px; }
+  .welcome-panel h2 { font-size:clamp(28px,2.4vw,39px); }
+  .welcome-panel p { font-size:13px; }
+  .welcome-button { font-size:13px; padding:13px 31px; }
+  .crown { font-size:clamp(66px,6.3vw,104px); }
+  .orb-title { font-size:clamp(43px,4.1vw,70px); }
+}
+@media (min-width:1121px) and (max-height:760px) {
+  .hero { min-height:560px; height:92svh; }
+  .orb-wrap { width:min(100%,660px,73svh); }
+  .auth-card { min-height:460px; }
+  .auth-body { padding-top:22px; padding-bottom:18px; }
+  .field { margin-bottom:10px; }
+}
+
+
+/* Brighter accessible labels and input text on both auth panels */
+.field label,.label-row label{color:#e3f5ff!important;font-weight:800!important;font-size:12px!important;letter-spacing:.08em!important}
+.input-shell input{color:#f5fbff!important;font-size:13px!important;font-weight:600!important}
+.input-shell input::placeholder{color:#b9d4e8!important;opacity:1!important;font-weight:500!important}
+.intro,.remember,.switch-line{color:#bcd8ea!important}
+</style>
+</head>
+<body>
+  <canvas id="universe" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <main class="layout">
+    <section class="hero" aria-label="DSA King System cosmic orb">
+      <div class="eyebrow"><span class="live-dot"></span> THE ASCENSION PROTOCOL <span class="serial">/ 001</span></div>
+      <div class="orb-wrap" id="orb-wrap">
+        <canvas id="orb" aria-hidden="true"></canvas>
+        <div class="orb-center">
+          <div class="crown" aria-hidden="true">♛</div>
+          <div class="orb-title">DSA KING<br><span>SYSTEM</span></div>
+          <div class="orb-subtitle">AWAKEN · CODE · ASCEND</div>
+        </div>
+      </div>
+      <div class="hero-bottom"><span class="line"></span><span>CODE</span><span class="diamond">◆</span><span>LEARN</span><span class="diamond">◆</span><span>EVOLVE</span><span class="line"></span></div>
+      <p class="hero-note">YOUR JOURNEY BEYOND THE ALGORITHM BEGINS HERE.</p>
+    </section>
+
+    <section class="auth-area">
+      <div class="auth-card" id="auth-card">
+        <div class="welcome-panel"><div class="welcome-inner"><span class="welcome-crown">♛</span><h2 id="welcome-title">Hello there!</h2><p id="welcome-copy">Begin your journey with the hunters, and start earning your crown.</p><button type="button" id="panel-switch" class="welcome-button">Sign up →</button></div></div>
+        <div class="auth-top" aria-hidden="true"><span class="auth-mark">♛</span><span>DSA KING SYSTEM</span><span class="version">V 1.0</span></div>
+        <div class="auth-body">
+          <p class="form-kicker">WELCOME TO THE SYSTEM</p>
+          <h1 id="form-title">Welcome back<span class="title-dot">.</span></h1>
+          <p class="intro" id="form-intro">Enter your credentials to continue your journey.</p>
+          <form id="auth-form">
+            <div class="field" id="name-field" hidden><label for="name">HUNTER NAME</label><div class="input-shell"><span>◇</span><input id="name" type="text" autocomplete="name" placeholder="Your name"></div></div>
+            <div class="field"><label for="email">EMAIL ADDRESS</label><div class="input-shell"><span>✉</span><input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></div></div>
+            <div class="field"><div class="label-row"><label for="password">PASSWORD</label><button class="text-link" type="button" id="forgot">Forgot password?</button></div><div class="input-shell"><span>⌑</span><input id="password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="8" required><button type="button" class="eye" id="eye" aria-label="Show password">◉</button></div></div>
+            <label class="remember"><input type="checkbox" id="remember"> <span id="remember-text">Remember me</span></label>
+            <p class="message" id="message" role="status" aria-live="polite"></p>
+            <button class="primary" id="submit" type="submit"><span id="submit-label">LOGIN TO SYSTEM</span><span>↗</span></button>
+          </form>
+          <div class="or"><span>OR CONTINUE WITH</span></div>
+          <button class="google" type="button" id="google"><span class="g-icon">G</span> Continue with Google</button>
+          <p class="switch-line"><span id="switch-prompt">New to the system?</span> <button type="button" id="switch">Create an account</button></p>
+        </div>
+        <div class="auth-footer"><span>● SECURE CONNECTION</span><span>© DSA KING SYSTEM</span></div>
+      </div>
+      
+    </section>
+  </main>
+  <script>
+(() => {
+  "use strict";
+  const bg = document.getElementById("universe"), orb = document.getElementById("orb");
+  const b = bg.getContext("2d", { alpha: true }), o = orb.getContext("2d", { alpha: true });
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+  let bw = 1, bh = 1, ow = 1, oh = 1, stars = [], streams = [], last = 0, angle = 0;
+  const rand = (a, c) => a + Math.random() * (c - a);
+  const TAU = Math.PI * 2;
+
+  function fit(canvas, ctx, w, h) {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.round(w * dpr));
+    canvas.height = Math.max(1, Math.round(h * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function resize() {
+    bw = innerWidth; bh = innerHeight;
+    fit(bg, b, bw, bh);
+    const r = orb.getBoundingClientRect();
+    ow = r.width; oh = r.height;
+    fit(orb, o, ow, oh);
+    stars = Array.from({ length: Math.min(350, Math.round(bw * bh / 4200)) }, () => ({
+      x: Math.random() * bw, y: Math.random() * bh, z: rand(.25, 1.4),
+      phase: rand(0, TAU), radius: rand(.3, 1.5)
+    }));
+    streams = Array.from({ length: Math.round(bw / 34) }, () => ({
+      x: Math.random() * bw, y: Math.random() * bh, len: rand(12, 115),
+      speed: rand(15, 65), a: rand(.03, .24)
+    }));
+  }
+  addEventListener("resize", resize, { passive: true });
+  addEventListener("pointermove", e => {
+    pointer.tx = (e.clientX / innerWidth - .5) * 2;
+    pointer.ty = (e.clientY / innerHeight - .5) * 2;
+  }, { passive: true });
+  resize();
+
+  function drawSpace(dt, t) {
+    b.clearRect(0, 0, bw, bh);
+    const glow = b.createRadialGradient(bw * .32, bh * .46, 0, bw * .32, bh * .46, bw * .52);
+    glow.addColorStop(0, "#063a7230"); glow.addColorStop(.5, "#06284b12"); glow.addColorStop(1, "#00000000");
+    b.fillStyle = glow; b.fillRect(0, 0, bw, bh);
+    for (const s of stars) {
+      if (!reduced) {
+        s.y += s.z * dt * 3.2;
+        if (s.y > bh + 3) { s.y = -3; s.x = Math.random() * bw; }
+      }
+      const alpha = (.2 + .55 * (1 + Math.sin(t * (.5 + s.z) + s.phase)) / 2);
+      b.beginPath(); b.fillStyle = `rgba(129,209,255,${alpha})`;
+      b.arc(s.x + pointer.x * s.z * 7, s.y + pointer.y * s.z * 7, s.radius * s.z, 0, TAU); b.fill();
+    }
+    b.lineWidth = 1;
+    for (const s of streams) {
+      if (!reduced) { s.y += s.speed * dt; if (s.y > bh + s.len) s.y = -s.len; }
+      const grad = b.createLinearGradient(s.x, s.y, s.x, s.y + s.len);
+      grad.addColorStop(0, "rgba(0,135,255,0)");
+      grad.addColorStop(1, `rgba(0,158,255,${s.a})`);
+      b.strokeStyle = grad; b.beginPath(); b.moveTo(s.x, s.y); b.lineTo(s.x, s.y + s.len); b.stroke();
+    }
+  }
+
+  function rotate3(p, a, tilt) {
+    let [x, y, z] = p;
+    const ca = Math.cos(a), sa = Math.sin(a), ct = Math.cos(tilt), st = Math.sin(tilt);
+    let X = x * ca + z * sa, Z = -x * sa + z * ca;
+    return [X, y * ct - Z * st, y * st + Z * ct];
+  }
+  function project(p, cx, cy, r) {
+    const depth = 2.8 / (2.8 - p[2] * .35);
+    return [cx + p[0] * r * depth, cy + p[1] * r * depth, depth];
+  }
+  function poly(points, stroke, width, blur = 0) {
+    o.beginPath(); points.forEach((p, i) => i ? o.lineTo(p[0], p[1]) : o.moveTo(p[0], p[1]));
+    o.strokeStyle = stroke; o.lineWidth = width; o.shadowBlur = blur; o.shadowColor = "#22aaff";
+    o.stroke(); o.shadowBlur = 0;
+  }
+  function drawOrb(t) {
+    o.clearRect(0, 0, ow, oh);
+    const cx = ow * .5 + pointer.x * 5, cy = oh * .5 + pointer.y * 5;
+    const r = Math.min(ow, oh) * .31;
+    const halo = o.createRadialGradient(cx, cy, r * .1, cx, cy, r * 1.6);
+    halo.addColorStop(0, "#007bff08"); halo.addColorStop(.45, "#087cff13"); halo.addColorStop(.78, "#0367f71a"); halo.addColorStop(1, "#00000000");
+    o.fillStyle = halo; o.beginPath(); o.arc(cx, cy, r * 1.6, 0, TAU); o.fill();
+
+    const tilt = .28 + pointer.y * .07;
+    // Rotating globe: latitudes and longitudes built from real 3D coordinates.
+    for (let lat = -75; lat <= 75; lat += 15) {
+      const phi = lat * Math.PI / 180, pts = [];
+      for (let i = 0; i <= 120; i++) {
+        const theta = i / 120 * TAU;
+        pts.push(project(rotate3([Math.cos(phi)*Math.cos(theta), Math.sin(phi), Math.cos(phi)*Math.sin(theta)], angle, tilt), cx, cy, r));
+      }
+      poly(pts, "rgba(48,174,255,.21)", .75);
+    }
+    for (let lon = 0; lon < 180; lon += 15) {
+      const lam = lon * Math.PI / 180, pts = [];
+      for (let i = 0; i <= 120; i++) {
+        const phi = i / 120 * TAU;
+        pts.push(project(rotate3([Math.cos(phi)*Math.cos(lam), Math.sin(phi), Math.cos(phi)*Math.sin(lam)], angle, tilt), cx, cy, r));
+      }
+      poly(pts, "rgba(63,186,255,.21)", .75);
+    }
+    // Glowing particle nodes on the sphere.
+    for (let i = 0; i < 180; i++) {
+      const y = 1 - 2 * (i + .5) / 180;
+      const rr = Math.sqrt(1 - y*y), a = i * 2.39996323;
+      const p = rotate3([rr*Math.cos(a), y, rr*Math.sin(a)], angle, tilt);
+      const q = project(p, cx, cy, r);
+      const alpha = .2 + Math.max(0, p[2]) * .65;
+      o.beginPath(); o.arc(q[0], q[1], p[2] > 0 ? 1.3 : .65, 0, TAU);
+      o.fillStyle = `rgba(112,215,255,${alpha})`; o.fill();
+    }
+    // Three orbital rings in different 3D planes, with bright traveling sparks.
+    for (let k = 0; k < 3; k++) {
+      const points = [];
+      const ringR = r * (1.21 + k * .065);
+      for (let i = 0; i <= 180; i++) {
+        const a = i / 180 * TAU, inclination = .32 + k * .38;
+        const x = Math.cos(a), y = Math.sin(a) * Math.sin(inclination);
+        const z = Math.sin(a) * Math.cos(inclination);
+        points.push(project(rotate3([x, y, z], angle * (.18 + k*.07) + k * 1.05, 0), cx, cy, ringR));
+      }
+      poly(points, `rgba(${k===1?115:42},${k===1?216:166},255,${.30 + k*.06})`, 1.2, 7);
+      const a = t * (.4 + k*.14) + k*2;
+      const x = Math.cos(a), y = Math.sin(a) * Math.sin(.32 + k*.38), z = Math.sin(a)*Math.cos(.32+k*.38);
+      const q = project(rotate3([x,y,z],angle*(.18+k*.07)+k*1.05,0),cx,cy,ringR);
+      const spark = o.createRadialGradient(q[0],q[1],0,q[0],q[1],14);
+      spark.addColorStop(0,"#ffffff");spark.addColorStop(.18,"#69d9ff");spark.addColorStop(1,"#00aaff00");
+      o.fillStyle=spark;o.beginPath();o.arc(q[0],q[1],14,0,TAU);o.fill();
+    }
+    const outer = o.createRadialGradient(cx,cy,r*.9,cx,cy,r*1.08);
+    outer.addColorStop(0,"#40c6ff00");outer.addColorStop(.85,"#32aaff14");outer.addColorStop(1,"#36aaff00");
+    o.fillStyle=outer;o.beginPath();o.arc(cx,cy,r*1.08,0,TAU);o.fill();
+  }
+
+  function tick(ms) {
+    const dt = Math.min((ms-last)/1000 || 0, .04); last = ms;
+    pointer.x += (pointer.tx - pointer.x) * .035;
+    pointer.y += (pointer.ty - pointer.y) * .035;
+    if (!reduced) angle += dt * .18;
+    drawSpace(dt, ms / 1000);
+    drawOrb(ms / 1000);
+    if (!reduced) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // This is a visual demonstration only. No credentials are stored or sent.
+  let signup = false;
+  const $ = id => document.getElementById(id);
+  function mode(value) {
+    signup = value;
+    const card=document.querySelector(".auth-card");
+    card?.classList.toggle("is-signup", signup);
+    $("welcome-title").textContent = signup ? "Welcome back!" : "Hello there!";
+    $("welcome-copy").textContent = signup ? "Already part of the system? Continue your journey toward the crown." : "Begin your journey with the hunters, and start earning your crown.";
+    $("panel-switch").textContent = signup ? "Login →" : "Sign up →";
+    $("name-field").hidden = !signup;
+    $("name").required = signup;
+    $("form-title").innerHTML = signup ? 'Begin your ascent<span class="title-dot">.</span>' : 'Welcome back<span class="title-dot">.</span>';
+    $("form-intro").textContent = signup ? 'Create your hunter profile and unlock your potential.' : 'Enter your credentials to continue your journey.';
+    $("submit-label").textContent = signup ? "CREATE HUNTER ACCOUNT" : "LOGIN TO SYSTEM";
+    $("switch-prompt").textContent = signup ? "Already a hunter?" : "New to the system?";
+    $("switch").textContent = signup ? "Login" : "Create an account";
+    $("remember-text").textContent = signup ? "I agree to the terms" : "Remember me";
+    $("password").autocomplete = signup ? "new-password" : "current-password";
+    $("forgot").hidden = signup;
+    $("message").textContent = "";
+  }
+  $("switch").addEventListener("click", () => mode(!signup));
+  $("panel-switch").addEventListener("click", () => mode(!signup));
+  $("eye").addEventListener("click", () => {
+    const pw = $("password"), show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    $("eye").setAttribute("aria-label", show ? "Hide password" : "Show password");
+  });
+  $("auth-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const submit = $("submit");
+    const data = {email: $("email").value.trim(), password: $("password").value};
+    if (signup) {
+      data.name = $("name").value.trim();
+      if (!$("remember").checked) {
+        $("message").textContent = "Please agree to the terms before creating an account.";
+        return;
+      }
+    }
+    submit.disabled = true;
+    $("message").textContent = "Verifying your hunter account…";
+    try {
+      const res = await fetch(signup ? "/api/auth/register" : "/api/auth/login", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        credentials: "same-origin", body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Unable to authenticate");
+      window.parent.postMessage({type: "dsa-auth-success"}, location.origin);
+    } catch (err) {
+      $("message").textContent = err.message || "Unable to connect to the server.";
+    } finally { submit.disabled = false; }
+  });
+  // Display OAuth callback failures instead of silently returning to login.
+  try {
+    const oauthError = new URLSearchParams(window.top.location.search).get('auth_error');
+    if (oauthError) {
+      $("message").textContent = oauthError;
+      $("message").style.cssText = 'display:block;color:#ffcad1!important;font-size:13px;font-weight:700;line-height:1.5;padding:10px 12px;border:1px solid #a8495a;background:#431827;border-radius:7px;margin-top:12px';
+    }
+  } catch (e) { /* Same-origin frame may not access top URL in unusual embeddings. */ }
+  $("google").addEventListener("click", () => {
+    window.top.location.assign("/auth/google");
+  });
+  $("forgot").addEventListener("click", () => {
+    $("message").textContent = "Password recovery is not configured yet. Contact the administrator.";
+  });
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* Six real interactive prototype modules. No fake AI scores or unverified claims. */
+NAV.push('Innovation Lab');
+const innovationOriginalRender=render;
+render=function(){if(tab!=='Innovation Lab')return innovationOriginalRender();innovationRender()};
+const MODULES=[['thought','AI Thought Mirror','Analyze reasoning and code patterns'],['timeline','Code Time Machine','Step through Python execution'],['debate','Algorithm Debate Arena','Compare correctness and performance arguments'],['simulator','Real-World DSA Simulator','Shortest-route optimization'],['galaxy','DSA Knowledge Galaxy','Explore concept prerequisites'],['verifier','AI Solution Verifier','Run generated adversarial tests']];
+let innovationMode='thought';
+function innovationRender(){
+ const p=document.querySelector('#page');
+ p.innerHTML=`<div class="innovation-hero"><small>◈ SIX NEW CODING POWERS</small><h3>INNOVATION <em>LAB</em></h3><p>Interactive, explainable DSA tools · Local demo mode</p></div><div class="innovation-tabs">${MODULES.map(([id,name])=>`<button class="${id===innovationMode?'active':''}" onclick="innovationMode='${id}';innovationRender()">${escapeHTML(name)}</button>`).join('')}</div><div class="panel innovation-panel"><h3>${escapeHTML(MODULES.find(x=>x[0]===innovationMode)[1])}</h3><p>${escapeHTML(MODULES.find(x=>x[0]===innovationMode)[2])}</p>${innovationControls()}<div id="innovation-output" aria-live="polite"></div></div>`;
+}
+function innovationControls(){let mode=innovationMode;
+ if(mode==='galaxy')return `<p>Mastered nodes are based on your solved demo problems.</p><button class="primary" onclick="innovationRun()">EXPLORE KNOWLEDGE GALAXY ↗</button>`;
+ if(mode==='simulator')return `<label>Scenario <select id="in-scenario"><option value="delivery">Delivery network</option><option value="traffic">Traffic network</option><option value="network">Data network</option></select></label> <label>Nodes <input id="in-nodes" type="number" min="3" max="16" value="8"></label><button class="primary" onclick="innovationRun()">GENERATE & SOLVE ROUTE ↗</button>`;
+ let extra=mode==='thought'?'<label>Your explanation <textarea id="in-reason" placeholder="Explain why your algorithm works and its edge cases"></textarea></label>':mode==='timeline'?'<label>Function arguments (JSON array) <input id="in-args" value="[[2,7,11,15],9]"></label>':mode==='verifier'?'<label>Problem <select id="in-problem">'+PROBLEMS.map(x=>`<option value="${x.id}" ${x.id===current.id?'selected':''}>${escapeHTML(x.title)}</option>`).join('')+'</select></label>':'';
+ return `<p>Python code only · Define <code>solve(...)</code>.</p><textarea id="in-code" class="code" spellcheck="false" aria-label="Python source code"></textarea>${extra}<div class="actions"><button class="primary" onclick="innovationRun()">${mode==='timeline'?'TRACE EXECUTION':mode==='verifier'?'RUN GENERATED TESTS':mode==='thought'?'ANALYZE REASONING':'START DEBATE'} ↗</button><button onclick="innovationUseEditor()">LOAD CURRENT PROBLEM CODE</button></div><small>Code execution is suitable for local trusted demos, not an internet-facing public judge.</small>`;
+}
+function innovationUseEditor(){let el=document.querySelector('#in-code');if(el)el.value=currentCode||current.starter}
+async function innovationRun(){const out=document.querySelector('#innovation-output');out.innerHTML='<p>Processing…</p>';let data={};try{
+ if(innovationMode==='galaxy')data.solved=state.solved;
+ else if(innovationMode==='simulator'){data.scenario=document.querySelector('#in-scenario').value;data.nodes=Number(document.querySelector('#in-nodes').value)}
+ else {data.code=document.querySelector('#in-code').value;if(innovationMode==='thought')data.reasoning=document.querySelector('#in-reason').value;if(innovationMode==='timeline')data.args=JSON.parse(document.querySelector('#in-args').value);if(innovationMode==='verifier')data.problem_id=Number(document.querySelector('#in-problem').value)}
+ const res=await fetch('/api/innovation/'+innovationMode,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await res.json();if(!res.ok)throw new Error(result.error||'Request failed');out.innerHTML=innovationView(result);
+ }catch(e){out.innerHTML=`<p class="innovation-error">${escapeHTML(e.message)}</p>`}}
+function innovationView(r){let m=innovationMode;
+ if(m==='thought')return `<h4>Reasoning feedback</h4>${r.insights.map(x=>`<p>✦ ${escapeHTML(x)}</p>`).join('')}<h4>Questions to answer</h4>${r.questions.map(x=>`<p>→ ${escapeHTML(x)}</p>`).join('')}<small>${escapeHTML(r.note)}</small>`;
+ if(m==='timeline')return `<h4>${r.error?'Execution stopped: '+escapeHTML(r.error):'Execution result: '+escapeHTML(JSON.stringify(r.result))}</h4><div class="innovation-steps">${r.steps.map((s,i)=>`<details ${i===0?'open':''}><summary>Step ${i+1} · Line ${s.line}</summary><pre>${escapeHTML(JSON.stringify(s.locals,null,2))}</pre></details>`).join('')}</div><small>Trace capped at 120 steps; local variables shown using repr().</small>`;
+ if(m==='debate')return r.agents.map(a=>`<div class="innovation-agent"><h4>${escapeHTML(a.name)}</h4><p>${escapeHTML(a.argument)}</p></div>`).join('')+`<p><strong>Verdict:</strong> ${escapeHTML(r.verdict)}</p>`;
+ if(m==='simulator')return `<h4>Optimal path: ${r.route.join(' → ')}</h4><p>Total ${escapeHTML(r.unit)}: <strong>${r.total_cost}</strong></p><div class="innovation-network">${r.nodes.map(n=>`<span class="innovation-node ${r.route.includes(n)?'onroute':''}">${n}</span>`).join('')}</div><details><summary>View graph edges and weights</summary><pre>${escapeHTML(r.edges.map(e=>`${e.from} ↔ ${e.to}: ${e.weight}`).join('\n'))}</pre></details><small>${escapeHTML(r.note)}</small>`;
+ if(m==='galaxy')return `<div class="innovation-galaxy">${r.nodes.map(n=>`<div class="innovation-star ${n.status}"><strong>✦ ${escapeHTML(n.name)}</strong><small>${escapeHTML(n.status)} · ${escapeHTML(n.prerequisites.join(', ')||'No prerequisite')}</small></div>`).join('')}</div><small>${escapeHTML(r.note)}</small>`;
+ if(m==='verifier')return `<h4>${r.status==='counterexample_found'?'⚠ Counterexample found':r.status==='timeout'?'⏱ Timed out':'✓ Generated tests passed'}</h4><p>${escapeHTML(r.message)} ${r.tested} / ${r.total||'?'} evaluated.</p>${r.counterexample?`<h4>Failing test</h4><pre>${escapeHTML(JSON.stringify(r.counterexample,null,2))}</pre>`:''}<small>${escapeHTML(r.note||'')}</small>`;
+ return `<pre>${escapeHTML(JSON.stringify(r,null,2))}</pre>`;
+}

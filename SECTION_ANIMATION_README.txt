@@ -1,0 +1,1 @@
+Section pop-out animations added to the fourth/main DSA platform only. Each feature page and its cards animate on entry, with staggered timing, hover lift and reduced-motion support. Existing Flask routes, auth, AI features and the Cosmic Orb login are unchanged.\n

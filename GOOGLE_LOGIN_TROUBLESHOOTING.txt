@@ -1,0 +1,10 @@
+GOOGLE SIGN-IN TROUBLESHOOTING
+
+1. Enter GOOGLE_CLIENT_ID and your rotated GOOGLE_CLIENT_SECRET in .env (never share them).
+2. Restart START_ZIA.bat after editing .env.
+3. Open http://127.0.0.1:5000 (not localhost:5000).
+4. Google OAuth redirect must be http://127.0.0.1:5000/auth/google/callback
+5. Add your Google email under Audience > Test users while in Testing mode.
+6. If your Google email was previously registered using email/password, use password login. The app deliberately prevents automatic linking to avoid account takeover. A separate verified linking flow would be needed.
+7. On callback failure, the login screen now displays a useful error. See Flask terminal logs for details.
+8. If sign-in still fails, capture the error text and terminal traceback with secrets redacted.
