@@ -1,75 +1,399 @@
-# DSA King System — No NPM edition
+ 
+<div align="center">
 
-## Windows: one-click startup
+# 👑 DSA KING SYSTEM
 
-Double-click **START_DSA KING.bat**. Python 3 is required. The first launch installs Flask, python-dotenv and requests automatically if missing. It starts the website at **http://127.0.0.1:5000** and opens your browser. No Node.js, `npm install`, or `npm run dev` is required. Subsequent launches reuse installed packages. Keep the command window open.
+### ⚔️ CODE. EVOLVE. ASCEND.
 
-Alternative: `python app.py` (after `pip install -r requirements.txt`).
+**DSA King System** is an AI-powered Data Structures and Algorithms learning platform that transforms traditional coding practice into an immersive, game-inspired experience.
 
-## Groq API setup
+Master coding challenges, explore AI-powered mentorship, track your progress through XP and Hunter rankings, and sharpen your problem-solving skills in a futuristic coding environment.
 
-Copy `.env.example` to `.env` and set `GROQ_API_KEY=your_key`. Never place the key in HTML or JS. The Flask backend calls Groq server-side. Without a key the mentor uses clearly labeled offline guidance. The name **Grok** usually refers to xAI's model, while **Groq** is a different inference API. This package implements **Groq**; no API key is included.
+**Solve Challenges. Unlock Your Potential. Become the Ultimate Coding King.**
 
-## Scope and limitations
+### 🌐 LIVE DEMO
 
-Static HTML/CSS/JavaScript frontend and Python Flask backend. The original WebP frames and portrait assets are included, and all 22 feature names appear in organized sections. Functional local prototypes include Python judge (4 curated problems), XP, mistake history, recommendations, AI mentor (Groq when configured), visual sorting, flowchart example, complexity chart, interview practice, portfolio export, dungeons, and solo contest practice. Real-time PvP, actual voice interview, arbitrary-code visualization, authenticated global leaderboards and production-grade judge isolation are **not implemented**. The code runner executes user Python locally: use only with trusted code on your own computer, never deploy this judge to a public server.
+🚀 **Experience DSA King System Live**
 
-The site is not completely installation-free: Python 3 and initial Python dependencies are needed, but the launcher handles the dependencies automatically. For Groq assistance an internet connection and API key are required.
+[![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-LAUNCH_WEBSITE-00BFFF?style=for-the-badge)](https://dsa-king-system.onrender.com/)
 
+**Website:** https://dsa-king-system.onrender.com/
 
-## Full-screen thunder update
-- AWAKEN and SHADOW MONARCH use edge-to-edge scroll animations; ARISE now uses full-viewport cover imagery.
-- AWAKEN has a fullscreen animated lightning overlay and synthesized thunder rumble.
-- Browsers block autoplay audio: click **THUNDER SOUND OFF** to enable thunder sound. Visual thunder works without audio permission.
-- Reduce Motion system preference disables the flashing lightning animation.
-- No npm required; double-click START_DSA KING.bat (Python required).
+### 💻 GITHUB REPOSITORY
 
+[![GitHub](https://img.shields.io/badge/GITHUB-VIEW_SOURCE_CODE-181717?style=for-the-badge&logo=github)](https://github.com/rohanbhowm25308/DSA-King-System)
 
-## 2026-10-29 UI fixes
-- Site renamed DSA King System throughout primary UI.
-- Top navigation is no longer fixed while scrolling.
-- AWAKEN and SHADOW MONARCH titles reduced and moved toward the lower corners, to avoid obscuring character faces and prevent text overflow.
-- ARISE cursor reveal throttled to one update per animation frame; CSS clip transition disabled.
-- Thunder toggle removed; thunder gain increased.
-- **Audio autoplay limitation:** Chrome/Edge commonly block audio on initial page load. The site attempts to start audio immediately, and unlocks it automatically upon the visitor's first scroll, click, touch, or keypress. Sound before interaction cannot be guaranteed without browser-specific permissions.
-- `.env` is included, with an empty `GROQ_API_KEY` field. Add your own key; never share it or commit it.
-- No npm: run `START_ZIA.bat` on Windows (Python required).
+**Repository:** https://github.com/rohanbhowm25308/DSA-King-System
 
-## Global thunder and ARISE cursor audio
-- Lightning and thunder now operate across the entire website, including the platform section.
-- Moving the mouse within the ARISE section plays a gentle, throttled synth chime distinct from thunder.
-- Browser audio autoplay restrictions still apply: the first user interaction may be needed to unlock audio.
-- The lightning overlay is noninteractive and does not block buttons or links.
+### 🛠️ BUILT WITH
 
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
 
-## Original Solo Leveling animation fidelity update
-- ARISE uses a full-canvas portrait reveal with eased pointer tracking, a feathered 16-frame trailing lens, and cyan aura, adapted from the uploaded RevealStage.jsx without requiring React/npm.
-- AWAKEN uses a canvas falling-glyph effect adapted from the uploaded GlyphRain.jsx, masked to keep the face readable.
-- The original DSA King System functionality and Flask backend remain in place.
+</div>
 
+---
 
-## Voice, languages, and visual theme
-- AI mentor chat has a microphone button using browser SpeechRecognition (Chrome/Edge recommended); dictated words appear in the input. Press Enter or ➤ to send. Permission and browser support are required.
-- Language picker includes 16 languages: Python, JavaScript, TypeScript, Java, C, C++, C#, Go, Rust, Ruby, PHP, Swift, Kotlin, Scala, Dart, R. The bundled judge **only executes Python**. Other languages provide editable templates and show an explicit unavailable message. A compatible remote judge and language-specific test harness are required for actual execution.
-- The coding dashboard uses navy/blue/black to match the animated landing pages.
-- No npm. Launch with START_ZIA.bat.
+##  THE SYSTEM HAS AWAKENED
 
-## New Login / Signup screen
-- The website now opens to a responsive, two-panel animated authentication screen modeled on the provided recording.
-- Login and signup switch inside the same screen; includes email, password, password visibility, terms checkbox, and error feedback.
-- User accounts are stored locally in `users.sqlite3` with hashed passwords. Flask session cookies keep users signed in across page reloads.
-- A logout control appears in the application header after login.
-- This is a local prototype. Before public deployment, add HTTPS, CSRF protection, login rate limiting, password recovery, email verification, and production database configuration.
-- Google sign-in is not included because it requires your Google OAuth client credentials and redirect setup.
-- To reset local test accounts, stop the server and delete `users.sqlite3`.
-- No NPM required. Run `START_ZIA.bat` (existing launcher).
+> "Every expert was once a beginner. Every algorithm was once a mystery. Every coding king started with one line of code."
 
-## Sliding login update
-- The dark welcome panel slides from left to right on Sign Up, and back on Login, as in the supplied reference video.
-- Mobile users see a compact stacked version with fade transitions.
-- Thunder lightning and audio are suppressed while the authentication overlay is visible.
-- After successful login, the page attempts to enable thunder audio (subject to browser autoplay policy).
+Traditional coding platforms give you problems.
 
+**DSA King System gives you a journey.**
 
-## Cosmic Orb login integration
-The approved dark navy-blue Cosmic Orb sliding Login / Sign Up page is now at `static/login.html`. It is displayed on first visit as a full-screen login gate, and its forms use the existing Flask `/api/auth/login` and `/api/auth/register` endpoints. Google sign-in redirects to the existing `/auth/google` endpoint (requires OAuth credentials in `.env`). After authentication, the existing Solo Leveling website appears and thunder audio can activate, subject to browser autoplay restrictions. No NPM needed.
+Inspired by the progression mechanics of fantasy gaming worlds, DSA King System transforms algorithm practice into an interactive developer experience.
+
+Instead of simply solving questions, users enter a Hunter-themed environment where they can practice algorithms, develop problem-solving skills, track achievements, earn experience points, and prepare for technical interviews.
+
+The mission is simple:
+
+**Turn consistent coding practice into visible skill progression.**
+
+---
+
+## ✨ WHAT MAKES DSA KING SYSTEM DIFFERENT?
+
+| Traditional Coding Platform | 👑 DSA King System |
+|---|---|
+| Basic problem-solving interface | Immersive Hunter-themed coding environment |
+| Static practice lists | Structured Easy, Medium, and Hard challenges |
+| Simple completion tracking | XP, levels, achievements, and progress analytics |
+| Limited guidance | AI-powered coding mentorship |
+| Ordinary coding experience | Algorithm dungeons and interactive learning modes |
+| Isolated practice | Leaderboards and competitive progression |
+| Basic interview questions | Dedicated interview preparation environment |
+
+The objective is not just to solve more problems, but to **understand algorithms, improve coding decisions, and build long-term confidence**.
+
+---
+
+## 🚀 CORE FEATURES
+
+###  01. DSA PROBLEM ARENA
+
+A dedicated coding environment designed for systematic algorithm practice.
+
+- Easy, Medium, and Hard difficulty levels
+- Problem descriptions and examples
+- Input/output explanations and constraints
+- Topic-based algorithm practice
+- Integrated coding editor
+- Run Code and Submit Code workflows
+- Test-case-based evaluation
+- Expandable question bank
+
+**Every problem is an opportunity to level up.**
+
+###  02. AI CODING MENTOR
+
+An intelligent learning companion powered by Groq-based AI integration.
+
+Designed to support:
+
+- Understanding difficult programming concepts
+- Exploring algorithmic approaches
+- Debugging assistance
+- Learning time and space complexity
+- Improving problem-solving strategies
+- Receiving explanations while practicing
+
+**The goal is to help developers understand the solution, not merely copy it.**
+
+###  03. ALGORITHM DUNGEONS
+
+A challenge-oriented experience inspired by gaming progression.
+
+The Dungeon section brings a mission-based feel to algorithm practice, encouraging users to approach programming challenges with curiosity, consistency, and determination.
+
+**Enter the dungeon. Face the algorithm. Conquer the challenge.**
+
+###  04. HUNTER PROGRESS SYSTEM
+
+A personalized progress dashboard that turns coding activity into measurable growth.
+
+- Total solved problems
+- Dynamic question-count tracking
+- Completion percentage
+- Experience points (XP)
+- Hunter levels
+- Submission statistics
+- Daily practice streaks
+- Difficulty-wise performance
+
+Progress is tied to distinct solved problems so repeated practice does not artificially inflate completion totals.
+
+###  05. LEADERBOARD & ACHIEVEMENTS
+
+A competitive progression experience featuring:
+
+- Hunter rankings
+- XP-based progression
+- Achievement milestones
+- Coding consistency tracking
+- Community-oriented motivation
+
+**Your rank is earned through practice.**
+
+###  06. ALGORITHM VISUALIZER
+
+A dedicated environment for exploring algorithms and building intuition about how they work.
+
+The Visualizer section complements code-based learning by emphasizing the underlying algorithmic process.
+
+###  07. INTERVIEW PREPARATION
+
+A dedicated section for developing the skills needed in technical interviews.
+
+The platform is designed to support structured DSA practice and interview-focused problem-solving.
+
+###  08. COMPANY PREPARATION
+
+A specialized preparation area focused on organizing coding practice around technical recruitment and company-oriented interview readiness.
+
+###  09. ENGINEERING MISSIONS
+
+A section connecting coding practice with broader engineering thinking, helping learners approach programming beyond isolated textbook exercises.
+
+###  10. CODING ARENA
+
+A competitive environment designed around coding challenges, rankings, and continuous improvement.
+
+###  11. GOOGLE AUTHENTICATION
+
+Google OAuth integration provides a convenient sign-in experience and connects users to their personal Hunter profiles.
+
+###  12. IMMERSIVE USER EXPERIENCE
+
+The interface includes:
+
+- Dark futuristic styling
+- Electric-blue visual accents
+- Hunter-inspired dashboard
+- Animated landing experience
+- Interactive navigation
+- Gaming-inspired progression elements
+- Dedicated coding workspace
+
+---
+
+##  EXPLORE THE SYSTEM
+
+| Module | Purpose |
+|---|---|
+| 🏠 Dashboard | Hunter overview and activity |
+| 💻 Problems | Algorithm practice and code submission |
+| 🤖 AI Lab | AI-assisted learning |
+| ⚔️ Dungeons | Challenge-oriented coding experience |
+| 📈 Visualizer | Algorithm exploration |
+| 🎤 Interviews | Technical interview preparation |
+| 🏢 Company Prep | Company-focused coding practice |
+| 🛠️ Engineering | Engineering-oriented challenges |
+| 🥊 Arena | Competitive coding experience |
+| 🏆 Progress | XP, streaks, rankings, and achievements |
+
+---
+
+##  SYSTEM ARCHITECTURE
+
+```mermaid
+flowchart TD
+    A[User / Hunter] --> B[HTML, CSS & JavaScript Interface]
+    B --> C[Flask Application]
+    C --> D[Google OAuth Authentication]
+    C --> E[DSA Problem Bank]
+    C --> F[AI Mentor / Groq API]
+    C --> G[Progress & Leaderboard]
+    C --> H[Code Evaluation Layer]
+    G --> I[(User Data Storage)]
+    H --> J[Configured Execution Service]
+    C --> K[Render Web Service]
+```
+
+The platform combines a lightweight web interface, a Python-based backend, AI integration, coding challenges, and personalized progression.
+
+---
+
+##  TECHNOLOGY STACK
+
+| Layer | Technologies |
+|---|---|
+| Frontend | HTML5, CSS3, JavaScript |
+| Backend | Python, Flask |
+| AI Integration | Groq API |
+| Authentication | Google OAuth 2.0 |
+| Data Management | SQLite-based application storage |
+| Code Evaluation | Python evaluation and configurable Judge0 integration |
+| Production Server | Gunicorn |
+| Deployment | Render |
+| Version Control | Git, GitHub |
+
+---
+
+##  LOCAL INSTALLATION
+
+### Prerequisites
+
+- Python 3
+- Git
+- VS Code or another code editor
+- Google OAuth credentials for Google sign-in
+- Groq API key for AI features
+- A properly configured execution service for supported non-Python languages
+
+### Step 1 — Clone the repository
+
+```bash
+git clone https://github.com/rohanbhowm25308/DSA-King-System.git
+```
+
+```bash
+cd DSA-King-System
+```
+
+### Step 2 — Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### Step 3 — Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4 — Configure environment variables
+
+Create a `.env` file in the project root and configure the values expected by the backend.
+
+Example:
+
+```env
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GROQ_API_KEY=your_groq_api_key
+FLASK_SECRET_KEY=your_random_secret_key
+```
+
+Additional configuration may be required depending on the selected AI model and code execution backend.
+
+**Never commit `.env`, API keys, OAuth secrets, or local user databases to GitHub.**
+
+### Step 5 — Run the application
+
+```bash
+python app.py
+```
+
+Open:
+
+```text
+http://127.0.0.1:5000
+```
+
+Google OAuth requires the appropriate localhost callback URI to be registered in Google Cloud Console.
+
+---
+
+##  DEPLOYMENT
+
+DSA King System is hosted on Render.
+
+**Production URL:**
+
+https://dsa-king-system.onrender.com/
+
+A typical Render configuration uses:
+
+**Build command**
+
+```bash
+pip install -r requirements.txt
+```
+
+**Start command**
+
+```bash
+gunicorn --bind 0.0.0.0:$PORT app:app
+```
+
+Configure application secrets using Render's environment variable settings.
+
+The Google OAuth redirect URI must match the deployed HTTPS callback exactly.
+
+For public deployment, user data should be stored persistently, and untrusted code must be evaluated in a securely isolated execution environment.
+
+---
+
+##  THE PHILOSOPHY
+
+DSA King System is built around three principles.
+
+**CODE.** Learn the fundamentals. Understand the problem. Write the solution.
+
+**EVOLVE.** Analyze mistakes. Improve your approach. Build consistency.
+
+**ASCEND.** Develop confidence. Strengthen technical skills. Become interview-ready.
+
+The platform combines algorithmic thinking, AI-assisted learning, and game-inspired motivation into one experience.
+
+---
+
+## 👨‍💻 DEVELOPER
+
+<div align="center">
+
+### Rohan Bhowmik
+
+**Computer Science & Engineering Student**
+
+*AI/ML • Data Science • Generative AI • Python • Full-Stack Development*
+
+Passionate about building intelligent applications that combine practical software engineering, artificial intelligence, and meaningful user experiences.
+
+[![GitHub](https://img.shields.io/badge/GitHub-rohanbhowm25308-181717?style=for-the-badge&logo=github)](https://github.com/rohanbhowm25308)
+
+[![Live Project](https://img.shields.io/badge/Explore-DSA_King_System-00BFFF?style=for-the-badge)](https://dsa-king-system.onrender.com/)
+
+</div>
+
+---
+
+## ⭐ SUPPORT THE PROJECT
+
+If you find DSA King System interesting or useful:
+
+-  Star the repository
+-  Fork the project
+-  Report bugs through GitHub Issues
+-  Suggest improvements
+-  Contribute through pull requests
+
+Your support helps the platform continue evolving.
+
+---
+
+<div align="center">
+
+### 👑 EVERY CODER STARTS AT LEVEL ONE.
+
+### NOT EVERY CODER STOPS THERE.
+
+**DSA KING SYSTEM**
+
+*Code. Evolve. Ascend.*
+
+**© DSA King System — Developed by Rohan Bhowmik**
+
+</div>
