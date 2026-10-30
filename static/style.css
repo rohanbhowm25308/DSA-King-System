@@ -231,36 +231,3 @@ body.auth-locked{overflow:hidden!important}
 @media (prefers-reduced-motion:reduce){
   #platform .dsa-enter,#platform .dsa-nav-enter {animation:none!important;transition:none!important}
 }
-
-
-/* DSA KING SYSTEM — EXTRA COMPACT FOOTER */
-
-footer {
-    padding: 10px 16px !important;
-    min-height: auto !important;
-}
-
-footer h2,
-footer h3 {
-    margin: 0 0 4px !important;
-    line-height: 1.2 !important;
-}
-
-footer p {
-    margin: 3px 0 !important;
-    line-height: 1.25 !important;
-}
-
-footer .social-links {
-    margin: 6px 0 !important;
-    gap: 8px !important;
-}
-
-footer .social-links a {
-    padding: 5px 10px !important;
-}
-
-footer .copyright {
-    margin-top: 5px !important;
-}
-

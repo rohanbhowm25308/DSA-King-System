@@ -1,0 +1,19 @@
+/* Accessible, consistent Hunter-themed controls for feature dialogs */
+#mod-close,#lab-close,.dsa-close-btn {
+ appearance:none!important; border:1px solid #8d69ff!important;
+ background:linear-gradient(125deg,#6144de,#a34cff)!important;
+ color:#fff!important; padding:11px 20px!important; border-radius:9px!important;
+ font:800 12px/1.25 inherit!important; font-weight:800!important;
+ letter-spacing:.05em!important; cursor:pointer!important; box-shadow:0 5px 20px #6441ff38!important;
+ min-height:40px!important; margin:4px 0!important;
+}
+#mod-close:hover,#lab-close:hover,.dsa-close-btn:hover {background:linear-gradient(125deg,#795eff,#bd62ff)!important;transform:translateY(-1px)}
+#mod-close:focus-visible,#lab-close:focus-visible,.dsa-close-btn:focus-visible {outline:3px solid #7bd6ff!important;outline-offset:3px!important}
+#lab-language,.dsa-themed-select,#in-language {background:#081427!important;color:#e9f5ff!important;border:1px solid #4682ba!important;border-radius:8px!important;padding:9px 12px!important;min-height:40px!important;max-width:100%!important}
+#lab-language option,#in-language option{background:#0c1a30;color:#fff}
+#lab-question,#lab-code,.dsa-themed-textarea {background:#081427!important;color:#e9f5ff!important;border:1px solid #42658e!important;border-radius:9px!important;padding:12px!important;box-sizing:border-box!important;resize:vertical!important;max-width:100%!important;font-size:14px!important;line-height:1.5!important}
+#lab-question::placeholder,#lab-code::placeholder{color:#8fa9c7!important}
+#lab-question:focus,#lab-code:focus{outline:2px solid #4aaeff!important;outline-offset:1px!important}
+#lab-result,.dsa-ai-result{margin-top:15px;max-height:320px;overflow:auto;color:#d6eaff;line-height:1.55}
+#lab-analyze,#mod-start {background:linear-gradient(115deg,#1764b9,#9652f4)!important;color:white!important;border:1px solid #66aaff!important;border-radius:9px!important;padding:11px 17px!important;min-height:40px!important;cursor:pointer!important}
+@media(max-width:600px){#lab-analyze,#lab-close,#mod-start,#mod-close{margin-top:8px!important}}

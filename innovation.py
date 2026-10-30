@@ -63,9 +63,19 @@ def simulator(d):
 def galaxy(d):
     solved=d.get('solved',[])
     if not isinstance(solved,list):solved=[]
+    from dsa_problem_bank import PROBLEMS
     completed={'Arrays':1,'Strings':2,'Dynamic Programming':3,'Binary Search':4}
-    nodes=[{'name':name,'prerequisites':prereqs,'status':'mastered' if completed.get(name) in solved else 'available' if all(completed.get(x) in solved for x in prereqs if x in completed) else 'locked'} for name,prereqs in TOPICS]
-    return {'nodes':nodes,'note':'Progress is based on four demo problems; other topics require future assessment integration.'}
+    # Reflect the actual curated bank as well as the four original core problems.
+    mastered=set()
+    for p in PROBLEMS:
+        if p['id'] in solved:
+            topic=str(p.get('topic','')).lower()
+            for name,_ in TOPICS:
+                if name.lower() in topic:mastered.add(name)
+    for name,pid in completed.items():
+        if pid in solved:mastered.add(name)
+    nodes=[{'name':name,'prerequisites':prereqs,'status':'mastered' if name in mastered else 'available' if all(x in mastered for x in prereqs) else 'locked'} for name,prereqs in TOPICS]
+    return {'nodes':nodes,'note':'Mastery reflects completed curated problems with matching topic labels; it is an indicative learning map.'}
 
 # Fixed reference algorithms and independently generated tests. User code runs in subprocess.
 def cases(problem):

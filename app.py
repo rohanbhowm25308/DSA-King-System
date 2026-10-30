@@ -329,6 +329,8 @@ def judge():
     language=str(data.get('language','python')).lower()
     if language != 'python':
         return run_remote_judge(language, code, problem_id)
+    if os.getenv('RENDER') and os.getenv('ALLOW_UNSAFE_LOCAL_EXECUTION') != '1':
+        return jsonify(error='Python code execution is disabled on public Render servers for safety. Configure a securely isolated remote judge before enabling public submissions.'),503
     tests=get_tests(problem_id)
     if tests is None: return jsonify(error='Unknown problem'),404
     if not isinstance(code,str) or len(code)>12000:return jsonify(error='Invalid code'),400
@@ -363,6 +365,46 @@ def judge():
     msg='All test cases passed.' if accepted else (error or (p.stderr[-350:] if p.stderr else 'Some test cases failed. Check edge cases and output format.'))
     return {'accepted':accepted,'passed':passed,'total':len(tests),'message':msg,'runtime_ms':round((time.monotonic()-t)*1000,2)}
 
+# Lightweight language mismatch guard for AI analysis. This does not execute code.
+LANGUAGE_LABELS={'python':'Python','c':'C','cpp':'C++','java':'Java','javascript':'JavaScript','typescript':'TypeScript','rust':'Rust','ruby':'Ruby','go':'Go','csharp':'C#','kotlin':'Kotlin','swift':'Swift','php':'PHP'}
+def detect_source_language(source):
+    code=source.strip()
+    signals={
+        'python':[r'(?m)^\s*(?:def|async def|from \w+ import|import \w+|class \w+\s*[:(])',r'(?m)^\s*(?:elif |except |with |for \w+ in |if .+:|while .+:)',r'(?m)^\s*print\s*\('],
+        'cpp':[r'#include\s*<',r'\bstd::|\bcout\s*<<|\bcin\s*>>|\bvector\s*<|\busing namespace std'],
+        'c':[r'#include\s*<(?:stdio|stdlib|string)\.h>',r'\bprintf\s*\(|\bscanf\s*\('],
+        'java':[r'\bpublic\s+static\s+void\s+main\b',r'\bSystem\.out\.',r'\bpublic\s+class\s+\w+'],
+        'javascript':[r'\bconsole\.log\s*\(',r'\b(?:const|let|var)\s+\w+\s*=',r'\bfunction\s+\w+\s*\('],
+        'typescript':[r'\binterface\s+\w+',r'\btype\s+\w+\s*=',r'\b(?:const|let)\s+\w+\s*:\s*(?:string|number|boolean)'],
+        'rust':[r'\bfn\s+main\s*\(',r'\blet\s+mut\b',r'\bprintln!\s*\(',r'\b(?:impl|pub fn)\b'],
+        'ruby':[r'(?m)^\s*def\s+\w+[^:]*$',r'\bputs\s+|\brequire\s+[\"\']',r'(?m)^\s*end\s*$'],
+        'go':[r'\bpackage\s+main\b',r'\bfunc\s+\w+\s*\(',r'\bfmt\.Print'],
+        'csharp':[r'\bConsole\.WriteLine\s*\(',r'\busing\s+System\s*;',r'\bnamespace\s+\w+'],
+        'kotlin':[r'\bfun\s+main\s*\(',r'\b(?:val|var)\s+\w+\s*=',r'\bprintln\s*\('],
+        'swift':[r'\bimport\s+Foundation\b',r'\bfunc\s+\w+\s*\(',r'\blet\s+\w+\s*=',r'\bprint\s*\('],
+        'php':[r'<\?php',r'\becho\s+',r'\$[A-Za-z_]\w*\s*=']}
+    scores={lang:sum(2 if i==0 else 1 for i,pat in enumerate(patterns) if re.search(pat,code)) for lang,patterns in signals.items()}
+    # Python syntax is reliably recognizable without executing it.
+    if scores['python']>=2:
+        try:ast.parse(code)
+        except SyntaxError:pass
+        else:scores['python']+=3
+    top=max(scores,key=scores.get)
+    return top if scores[top]>=2 else None
+
+def language_mismatch(source,selected):
+    detected=detect_source_language(source)
+    if selected!='python' and (re.search(r'(?m)^\s*(?:def|async def)\s+\w+\s*\([^\n]*\)\s*(?:->[^:]*)?:',source) or re.search(r'(?m)^\s*(?:elif\b|except\b|from\s+\w+\s+import\b)',source)):
+        return 'python'
+    if detected and detected!=selected:
+        # Overlapping syntax among C-family languages is often ambiguous.
+        family={'c','cpp','java','javascript','typescript','csharp','kotlin','swift'}
+        if detected in family and selected in family:
+            unmistakable={'cpp':r'#include\s*<|\bstd::|\bcout\s*<<', 'java':r'\bSystem\.out\.|\bpublic\s+class', 'javascript':r'\bconsole\.log\(', 'typescript':r'\binterface\s+\w+', 'c':r'#include\s*<stdio\.h>', 'csharp':r'\bConsole\.WriteLine', 'kotlin':r'\bfun\s+main', 'swift':r'\bimport\s+Foundation'}
+            if not re.search(unmistakable.get(detected,r'(?!)'),source):return None
+        return detected
+    return None
+
 HINTS={1:'Use a dictionary of previously seen values. For each element, search for target minus the element.',2:'Normalize the string to lowercase alphanumeric characters before checking the reverse.',3:'Kadane’s algorithm tracks the maximum sum ending at each position.',4:'Use two bounds and check the midpoint; pay attention to the loop condition.',100005:'Try a two-pointer technique with left and right maximum heights.',100006:'A monotonic increasing stack can find the largest rectangle in linear time.'}
 
 @app.post('/mentor')
@@ -374,22 +416,31 @@ def mentor():
     question=str(data.get('question',''))[:1000]
     language=str(data.get('language','python'))[:30]
     result=data.get('judge_result') or {}
+    if mode in ('review','counterexample','explain'):
+        if not code.strip():return jsonify(mode='validation-error',message='Paste code first. The question field is optional.'),400
+        if language not in LANGUAGE_LABELS:return jsonify(mode='validation-error',message='Unsupported language selection.'),400
+        mismatch=language_mismatch(code,language)
+        if mismatch:return jsonify(mode='validation-error',message=f'Selected {LANGUAGE_LABELS[language]}, but the pasted code appears to be {LANGUAGE_LABELS[mismatch]}. Select the correct language or paste {LANGUAGE_LABELS[language]} code.'),422
     key=os.getenv('GROQ_API_KEY','').strip()
     if key:
-        prompt=f"Problem ID: {problem_id}. Mode: {mode}. Latest judge result: {json.dumps(result)[:1000]}. Student question: {question}. Student {language} code:\n{code}"
+        task_instructions={
+            'review': 'Act as a bug detective. Examine the actual code, identify concrete likely defects, explain why each is a defect, propose a corrected snippet, and give 2 tests. If the code appears correct, explicitly say no clear bug found and suggest edge cases. Do not invent execution results.',
+            'counterexample': 'Generate at least 5 concrete candidate counterexample tests for this exact code. For each give input, expected output when the problem specification makes it determinable, what assumption it tests, and why it could fail. Do not claim tests were executed. Ask for the problem specification if expected output cannot be known.',
+            'explain': 'Act as an AI coding mentor. Explain the algorithm and key lines, assess complexity and edge cases, suggest 2 improvements, and provide a brief example. Do not claim you executed the code.'
+        }
+        task=task_instructions.get(mode, 'Give actionable coding guidance for the submitted code.')
+        prompt=f"Task: {task}\nLanguage: {language}\nProblem ID: {problem_id}\nLatest judge result: {json.dumps(result)[:1000]}\nOptional context: {question or 'Not provided; infer from code and state assumptions.'}\nStudent code:\n{code}"
         endpoint='https://api.groq.com/openai/v1/chat/completions'
-        model=os.getenv('GROQ_MODEL','openai/gpt-oss-20b').strip() or 'openai/gpt-oss-20b'
-        payload={'model':model,'messages':[{'role':'system','content':'You are the DSA King System AI, a patient DSA coding mentor. Give actionable, accurate, concise feedback. Never claim code passed unless judge result says so. For hints avoid giving full solutions. For counterexamples, suggest candidate tests, and do not claim they were verified.'},{'role':'user','content':prompt}],'temperature':0.3,'max_tokens':550}
+        model=os.getenv('GROQ_TEXT_MODEL','llama-3.3-70b-versatile').strip() or 'llama-3.3-70b-versatile'
+        payload={'model':model,'messages':[{'role':'system','content':'You are the DSA King System AI, a patient DSA coding mentor. Give actionable, accurate, concise feedback. Never claim code passed unless judge result says so. For hints avoid giving full solutions. For counterexamples, suggest candidate tests, and do not claim they were verified.'},{'role':'user','content':prompt}],'temperature':0.2,'max_completion_tokens':3000}
         headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'}
         try:
-            r=requests.post(endpoint,headers=headers,json=payload,timeout=25)
+            r=requests.post(endpoint,headers=headers,json=payload,timeout=40)
             if r.status_code==404:
-                # A retired/unknown model commonly returns 404. Retry once with a
-                # separate commonly available model; never retry an invalid API key.
-                fallback='openai/gpt-oss-120b'
+                fallback='openai/gpt-oss-20b'
                 if model!=fallback:
                     payload['model']=fallback
-                    r=requests.post(endpoint,headers=headers,json=payload,timeout=25)
+                    r=requests.post(endpoint,headers=headers,json=payload,timeout=30)
             if r.status_code in (401,403):
                 return jsonify(mode='groq-error',message='Groq authentication denied. Verify GROQ_API_KEY in .env, restart Flask, and check API key permissions.'),502
             if r.status_code==404:
@@ -406,11 +457,40 @@ def mentor():
             if r.status_code==429:
                 return jsonify(mode='groq-error',message='Groq rate limit reached. Wait and retry or check account limits.'),502
             r.raise_for_status()
-            answer=r.json()['choices'][0]['message']['content']
+            response_data=r.json()
+            def extract_answer(data):
+                choices=data.get('choices') or []
+                if not choices:return ''
+                message=choices[0].get('message') or {}
+                content=message.get('content') or ''
+                if isinstance(content,list):
+                    content='\n'.join(str(x.get('text','')) for x in content if isinstance(x,dict))
+                return content.strip() if isinstance(content,str) else ''
+            answer=extract_answer(response_data)
+            if not answer:
+                # Retry with a standard instruction model, rather than another reasoning model.
+                for alternative in ('llama-3.3-70b-versatile','openai/gpt-oss-20b'):
+                    if alternative==payload['model']:continue
+                    retry_payload=dict(payload,model=alternative,max_completion_tokens=3000)
+                    try:
+                        retry=requests.post(endpoint,headers=headers,json=retry_payload,timeout=40)
+                        if retry.ok:
+                            answer=extract_answer(retry.json())
+                            if answer:break
+                        else:
+                            app.logger.warning('Groq fallback %s returned HTTP %s: %s',alternative,retry.status_code,retry.text[:250])
+                    except (requests.RequestException,ValueError) as error:
+                        app.logger.warning('Groq fallback %s failed: %s',alternative,type(error).__name__)
+            if not answer:
+                finish_reason=((response_data.get('choices') or [{}])[0].get('finish_reason') or 'unknown')
+                app.logger.warning('Groq empty response: model=%s finish_reason=%s',model,finish_reason)
+                return jsonify(mode='groq-error',message='Groq returned no answer. Check server logs for finish_reason and verify a text-generation model is enabled in your Groq account.'),502
             return jsonify(mode='groq-ai',message=answer)
         except (requests.RequestException,ValueError,KeyError,IndexError,TypeError) as exc:
             app.logger.warning('Groq mentor request failed: %s',type(exc).__name__)
             return jsonify(mode='groq-error',message='Groq is unavailable. Check the configured model, network and Groq service status. Details: '+type(exc).__name__),502
+    if mode in ('review','counterexample','explain') and code.strip():
+        return jsonify(mode='ai-not-configured',message='Code-specific AI analysis is unavailable because GROQ_API_KEY is not configured. Add a valid key to your .env or Render environment and restart the server. The optional question box is not required.'),503
     if mode=='hint': msg=HINTS.get(problem_id,'Try breaking the problem into smaller steps.')
     elif mode=='counterexample':msg={1:'Try nums=[3,3], target=6.',2:'Try an empty string or punctuation-only input.',3:'Try all-negative inputs such as [-5,-2,-8].',4:'Try a one-element array or an absent target.'}.get(problem_id,'Try empty and boundary inputs.')
     elif mode=='review':msg=('The last submission failed some tests. Check edge cases. ' if not result.get('accepted') else 'Review your solution complexity. ')+HINTS.get(problem_id,'')
@@ -419,11 +499,16 @@ def mentor():
 
 
 # Six interactive learning modules. Local code execution is for trusted demos only.
+from interview_engine import interview_api
+app.register_blueprint(interview_api)
+
 from innovation import HANDLERS
 @app.post('/api/innovation/<module>')
 def innovation_endpoint(module):
     if not session.get('uid'):return jsonify(error='Please log in first.'),401
     if module not in HANDLERS:return jsonify(error='Unknown module'),404
+    if module in ('timeline','verifier') and os.getenv('ALLOW_UNSAFE_LOCAL_EXECUTION') != '1':
+        return jsonify(error='This feature executes Python code and is disabled on public servers. Use a securely sandboxed execution service. For trusted local-only development set ALLOW_UNSAFE_LOCAL_EXECUTION=1.'),503
     data=request.get_json(silent=True) or {}
     try:return jsonify(HANDLERS[module](data))
     except (ValueError,TypeError,OverflowError) as exc:return jsonify(error=str(exc)[:250]),400
