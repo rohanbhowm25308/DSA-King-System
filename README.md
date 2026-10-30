@@ -13,7 +13,7 @@ Master coding challenges, explore AI-powered mentorship, track your progress thr
 
 ### 🌐 LIVE DEMO
 
-🚀 **Experience DSA King System Live**
+ **Experience DSA King System Live**
 
 [![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-LAUNCH_WEBSITE-00BFFF?style=for-the-badge)](https://dsa-king-system.onrender.com/)
 
