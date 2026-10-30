@@ -358,13 +358,17 @@ The platform combines algorithmic thinking, AI-assisted learning, and game-inspi
 
 **Computer Science & Engineering Student**
 
-*AI/ML • Data Science • Generative AI • Python • Full-Stack Development*
+*AI/ML • Data Science • Generative AI • Python • Web Development*
 
 Passionate about building intelligent applications that combine practical software engineering, artificial intelligence, and meaningful user experiences.
 
 [![GitHub](https://img.shields.io/badge/GitHub-rohanbhowm25308-181717?style=for-the-badge&logo=github)](https://github.com/rohanbhowm25308)
 
 [![Live Project](https://img.shields.io/badge/Explore-DSA_King_System-00BFFF?style=for-the-badge)](https://dsa-king-system.onrender.com/)
+
+<a href="https://www.linkedin.com/in/rohan-bhowmik-b014473a1/" target="_blank">
+  <img src="https://img.shields.io/badge/LinkedIn-Rohan_Bhowmik-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Profile"/>
+</a>
 
 </div>
 
